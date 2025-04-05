@@ -2,9 +2,11 @@ package app.Rents;
 
 import app.Masini.Masina;
 import app.Users.User;
+import com.sun.source.tree.ReturnTree;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class RentService {
     List<Rent> rents=new ArrayList<>();
@@ -87,22 +89,30 @@ public class RentService {
              }
         }
         return carsIds;
+
     }
-    public  List<Rent> masiniInchiriate() {
-        for (int i = 0; i < rents.size(); i++) {
-            if (rents.get(i).status == Status.COMPLETED || rents.get(i).status == Status.PROCESSING)
-                masiniInchiriate().add(rents.get(i));
-        }
-        return masiniInchiriate();
-    }
-    public List<Rent> masiniLibere() {
+    public List<Integer> masiniLibere() {
         List<Integer> carIds=new ArrayList<>();
         for (int i = 0; i < rents.size(); i++) {
-            if(!masiniInchiriate().contains(rents.get(i).idMasina)){
-                masiniLibere().add(rents.get(i));
+            if (verificareStatusMasina(rents.get(i).idMasina)){
+                carIds.add(rents.get(i).id);
             }
         }
-        return masiniLibere();
+        return carIds;
+    }
+
+    //todo:CheckCarStatusbyCarId
+
+
+    public Boolean verificareStatusMasina(int idMasina){
+        for(int i=0;i<rents.size();i++){
+            if(rents.get(i).idMasina==idMasina){
+                if(rents.get(i).status==Status.PROCESSING){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public int ceaMaiInchiriataMasina() {
@@ -121,8 +131,28 @@ public class RentService {
                 ceaMaiInchiriata = rent1.idMasina;
             }
         }
-        System.out.println("de "+ maxCount +" ori"+ " Masina cu id:");
+
         return ceaMaiInchiriata;
     }
 
+    public void inchiriereMasini(int idMasina, int userId) {
+        Rent r6=new Rent();
+
+        r6.id=1;
+        r6.idMasina=idMasina;
+        r6.idUser=userId;
+
+        this.rents.add(r6);
+    }
+
+    public boolean returnareMasini(int idUser,int idMasina) {
+        for(int i=0;i<rents.size();i++){
+            if(rents.get(i).idMasina==idMasina&&rents.get(i).idUser==idUser){
+                rents.get(i).status=Status.COMPLETED;
+                return true;
+            }
+        }
+        return false;
+    }
+    //todo:functie generare id
 }

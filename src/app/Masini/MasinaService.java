@@ -28,16 +28,16 @@ public class MasinaService {
     //todo: functie ce primeste ca paremtru o lista de ids si returneaza o lista cu ctoate masinile ce
     //au id in lista
 
-    public List<Masina> getMasini(List<Integer> idsCars) {
+    public List<Masina> getMasini (List<Integer> idsCars) {
 
 
-        List<Masina> masini = new ArrayList<>();
+        List<Masina> masiniFiltrate = new ArrayList<>();
         for(int i=0;i<masini.size();i++){
             if(idsCars.contains(masini.get(i).id)){
-                masini.add(masini.get(i));
+                masiniFiltrate.add(masini.get(i));
             }
         }
-        return masini;
+        return masiniFiltrate;
     }
 
     public void afisareMasini(){
@@ -52,5 +52,14 @@ public class MasinaService {
             }
         }
     }
+    public void getMasiniById(int id){
+        for(int i=0;i<masini.size();i++){
+            if(id==masini.get(i).id) {
+                System.out.println(masini.get(i).descriere());
+            }
+        }
+    }
+
+
 }
 

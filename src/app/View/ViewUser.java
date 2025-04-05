@@ -4,6 +4,7 @@ import app.Masini.Masina;
 import app.Masini.MasinaService;
 import app.Rents.Rent;
 import app.Rents.RentService;
+import app.Rents.Status;
 import app.Users.User;
 import app.Users.UserService;
 
@@ -13,7 +14,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ViewUser {
-    public Masina masina =new Masina();
     public MasinaService masinaService=new MasinaService();
     public RentService rentService=new RentService();
     public User user= new User();
@@ -21,12 +21,12 @@ public class ViewUser {
 
     public void meniu(){
         System.out.println("1->istoric Client");
-        System.out.println("2->inchiriere Masina");
+        System.out.println("2->Masini libere");
         System.out.println("3->returnare Masina");
         System.out.println("4->cea mai inchiriata masina");
         System.out.println("5->sterge masina");
-        System.out.println("6->istoric User");
-        System.out.println("7->istoric Masina");
+        System.out.println("6->Inchiriere masina");
+        System.out.println("7->Returnare masina");
 
     }
 
@@ -44,7 +44,7 @@ public class ViewUser {
                      this.istoricClient();
                      break;
                  case 2:
-                     this.inchiriereMasina();
+                     this.masiniLibere();
                      break;
                  case 3:
                      this.meniu();
@@ -55,6 +55,12 @@ public class ViewUser {
                  case 5:
                      this.stergeMasina();
                      break;
+                 case 6:
+                     this.inchiriereMasina();
+                     break;
+                 case 7:
+                     this.returnareMasina();
+                     break;
                  default:
                      System.out.println("invalid choice");
              }
@@ -63,7 +69,7 @@ public class ViewUser {
      }
 
     //todo:
-    //afisare isttoric client
+    //afisare istoric client
 
     public void istoricClient() {
         System.out.println("Id ul pentru verificare istoric:");
@@ -79,20 +85,27 @@ public class ViewUser {
 
     //todo: inchiriere masina retunare masina
 
-    public void inchiriereMasina(){
-        List<Rent> masiniLibere = this.rentService.masiniLibere();
-     //   List<Masina> cars = this.masinaService.getMasini();
-
-        for (int i = 0; i < masiniLibere.size(); i++) {
-            System.out.println(masiniLibere.get(i).id);
-        }
-
+    public void disponibilitateMasina() {
+        System.out.println("Introduceti id ul masini pentru inchiriere:");
+        int id = Integer.parseInt(scanner.nextLine());
+        this.rentService.verificareStatusMasina(id);
     }
+    public void masiniLibere() {
+        System.out.println("Masinile disponibile:");
+    List<Masina> masinas = this.masinaService.getMasini(this.rentService.masiniLibere());
+      for (Masina masina : masinas) {
+          System.out.println(masina.descriere());
+      }
+    }
+
+
+
     //todo:statistica cea mai inchiriata masina
 
     public void ceaMaiInchiriataMasina(){
-        System.out.println(this.rentService.ceaMaiInchiriataMasina());
-        masinaService.afisareMasini();
+
+        System.out.println("Cea mai inchiriata masina:");
+        this.masinaService.getMasiniById(rentService.ceaMaiInchiriataMasina());
     }
     //todo: stergere masina
     public void stergeMasina(){
@@ -101,6 +114,17 @@ public class ViewUser {
         masinaService.steregereMasina(id);
         masinaService.afisareMasini();
     }
-    
+    public void inchiriereMasina(){
+        System.out.println("Introduceti id ul masinii pe care vreti sa o inchiriati:");
+        int id = Integer.parseInt(scanner.nextLine());
+        this.rentService.inchiriereMasini(id, user.id);
+        System.out.println("Masina inchiriata pentru userul: " + user.id);
+    }
+    public void returnareMasina() {
+        System.out.println("Introduceti id ul masinii pe care vreti sa o returnati:");
+        int id = Integer.parseInt(scanner.nextLine());
+        this.rentService.returnareMasini(user.id, id);
+        System.out.println("Masina returnata de userul: " + user.id);
+    }
+    }
 
-}
