@@ -141,6 +141,7 @@ public class RentService {
         r6.id=1;
         r6.idMasina=idMasina;
         r6.idUser=userId;
+        r6.status=Status.COMPLETED;
 
         this.rents.add(r6);
     }
@@ -154,5 +155,5 @@ public class RentService {
         }
         return false;
     }
-    //todo:functie generare id
+
 }

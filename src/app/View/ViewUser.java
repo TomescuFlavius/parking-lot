@@ -68,8 +68,7 @@ public class ViewUser {
          }
      }
 
-    //todo:
-    //afisare istoric client
+    //todo: afisare istoric client
 
     public void istoricClient() {
         System.out.println("Id ul pentru verificare istoric:");
