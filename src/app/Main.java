@@ -1,29 +1,19 @@
 package app;
-import java.util.Scanner;
 
-import app.Masini.Masina;
-import app.Users.User;
-import app.Rents.Rent;
-import app.Masini.MasinaService;
-import app.Rents.RentService;
-import app.Users.UserService;
-import app.View.ViewUser;
-import java.util.List;
+
+import app.Masini.MasinaComand.MasinaComandServiceImpl;
+import app.Rents.RentComand.RentComandServviceImpl;
+import app.Users.UserComand.UserComandServiceImpl;
+import app.View.ViewUserImpl;
 
 public class Main {
     public static void main(String[] args) {
 
-        MasinaService masinaService = new MasinaService();
-        UserService userService = new UserService();
-        RentService rentService = new RentService();
-        Masina masina = new Masina();
-        User user = new User();
-        Rent rent = new Rent();
-        ViewUser viewUser = new ViewUser();
-
+        RentComandServviceImpl rentService = new RentComandServviceImpl();
+        UserComandServiceImpl userService = new UserComandServiceImpl();
+        MasinaComandServiceImpl masinaService = new MasinaComandServiceImpl();
+        ViewUserImpl viewUser = new ViewUserImpl();
         viewUser.play();
-
-
 
 
         }

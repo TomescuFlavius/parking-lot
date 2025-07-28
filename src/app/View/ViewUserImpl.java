@@ -1,24 +1,38 @@
 package app.View;
 
-import app.Masini.Masina;
-import app.Masini.MasinaService;
-import app.Rents.Rent;
-import app.Rents.RentService;
-import app.Rents.Status;
-import app.Users.User;
-import app.Users.UserService;
+import app.Masini.Model.Masina;
+import app.Masini.MasinaComand.MasinaComandServiceImpl;
+import app.Rents.RentComand.RentComandServviceImpl;
+import app.Users.Model.User;
+import app.Users.UserComand.UserComandService;
+import app.Users.UserComand.UserComandServiceSingleton;
+import app.Users.UserQuery.UserQueryService;
+import app.Users.UserQuery.UserQueryServiceSingleton;
 
-import java.security.Provider;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ViewUser {
-    public MasinaService masinaService=new MasinaService();
-    public RentService rentService=new RentService();
-    public User user= new User();
-    public Scanner scanner=new Scanner(System.in);
+public class ViewUserImpl implements View{
+    private MasinaComandServiceImpl masinaService;
+    private RentComandServviceImpl rentService;
+    private User user;
+    private Scanner scanner;
 
+    private UserComandService userComandService;
+    private UserQueryService userQueryService;
+
+
+    public ViewUserImpl(){
+        this.user=new User();
+        this.scanner=new Scanner(System.in);
+        this.rentService=new RentComandServviceImpl();
+        this.masinaService=new MasinaComandServiceImpl();
+
+       this.userComandService= UserComandServiceSingleton.getInstance();
+       this.userQueryService= UserQueryServiceSingleton.getInstance();
+
+        this.play();
+    }
     public void meniu(){
         System.out.println("1->istoric Client");
         System.out.println("2->Masini libere");
@@ -30,12 +44,10 @@ public class ViewUser {
 
     }
 
-
+@Override
     public void play(){
         boolean running=true;
-         user.id=1;
-         this.masinaService.loadMasini();
-         this.rentService.loadRents();
+
          while(running) {
              meniu();
              int alegere = Integer.parseInt(scanner.nextLine());
@@ -47,7 +59,7 @@ public class ViewUser {
                      this.masiniLibere();
                      break;
                  case 3:
-                     this.meniu();
+                     this.returnareMasina();
                      break;
                  case 4:
                      this.ceaMaiInchiriataMasina();
@@ -73,13 +85,12 @@ public class ViewUser {
     public void istoricClient() {
         System.out.println("Id ul pentru verificare istoric:");
         int id = Integer.parseInt(scanner.nextLine());
-        user.id=id;
-        List<Integer> carsIds = this.rentService.getAllRentsByUserId(user.id);
+        user.setId(id);
+        List<Integer> carsIds = this.rentService.getAllRentsByUserId(user.getId());
         List<Masina> cars = this.masinaService.getMasini(carsIds);
         for (int i = 0; i < cars.size(); i++) {
             System.out.println(cars.get(i).descriere());
         }
-        //todo:afisare masinile
     }
 
     //todo: inchiriere masina retunare masina
@@ -116,14 +127,14 @@ public class ViewUser {
     public void inchiriereMasina(){
         System.out.println("Introduceti id ul masinii pe care vreti sa o inchiriati:");
         int id = Integer.parseInt(scanner.nextLine());
-        this.rentService.inchiriereMasini(id, user.id);
-        System.out.println("Masina inchiriata pentru userul: " + user.id);
+        this.rentService.inchiriereMasini(id, user.getId());
+        System.out.println("Masina inchiriata pentru userul: " + user.getId());
     }
     public void returnareMasina() {
         System.out.println("Introduceti id ul masinii pe care vreti sa o returnati:");
         int id = Integer.parseInt(scanner.nextLine());
-        this.rentService.returnareMasini(user.id, id);
-        System.out.println("Masina returnata de userul: " + user.id);
+        this.rentService.returnareMasini(user.getId(), id);
+        System.out.println("Masina returnata de userul: " + user.getId());
     }
     }
 
