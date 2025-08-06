@@ -1,12 +1,16 @@
 package app.Rents.RentQuery;
 
+import app.Masini.Model.Masina;
 import app.Rents.Model.Rent;
+import app.Rents.Status;
 import app.Users.Model.User;
 
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class RentQueryServiceImpl implements RentQueryService {
@@ -51,4 +55,45 @@ public class RentQueryServiceImpl implements RentQueryService {
     public List<Rent> getAllRents() {
         return this.rents;
     }
+
+    @Override
+    public Rent findLastRentByCarId(int id) {
+        List<Rent>rents=this.getAllRentsByCarId(id);
+
+        return rents.size()>0?rents.getLast():null;
+    }
+
+    @Override
+    public Rent findCarById(int id) {
+        for (Rent rent:rents){
+            if (rent.getId()==id){
+                return rent;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<Rent> getAllRentsByCarId(int carId) {
+        List<Rent> filteredRents=new ArrayList<>();
+
+        for(Rent r:rents){
+            if(r.getIdMasina()==carId){
+                filteredRents.add(r);
+            }
+        }
+
+        for(int i=0;i<filteredRents.size();i++){
+            for (int j=i+1;j<filteredRents.size()-1;j++){
+                if (filteredRents.get(i).getInchiriere().compareTo(filteredRents.get(j).getInchiriere())<0){
+                    Rent temp=filteredRents.get(i);
+                    filteredRents.set(i,filteredRents.get(j));
+                    filteredRents.set(j,temp);
+                }
+            }
+        }
+        return filteredRents;
+    }
+
+
 }

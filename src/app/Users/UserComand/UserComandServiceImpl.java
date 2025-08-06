@@ -15,13 +15,13 @@ public class UserComandServiceImpl implements UserComandService {
 
 
     public UserComandServiceImpl() {
-        this.file=new File("C:\\mycode\\oop\\incapsulare\\parc-auto\\src\\app\\Users\\Users");
+        this.file=new File("C:\\mycode\\oop\\incapsulare\\parc-auto\\src\\app\\Users\\File\\Users");
         this.users=new ArrayList<>();
         this.loadUsers();
     }
     public void loadUsers() {
         try{
-            Scanner scanner=new Scanner(file);
+            Scanner scanner=new Scanner(this.file);
             while(scanner.hasNextLine()) {
                 String line=scanner.nextLine();
                 User user=new User(line);

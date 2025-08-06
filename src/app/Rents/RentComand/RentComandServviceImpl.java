@@ -1,12 +1,16 @@
 package app.Rents.RentComand;
+import app.Masini.Model.Masina;
 import app.Rents.Model.Rent;
+import app.Rents.RentQuery.RentQueryService;
 import app.Rents.Status;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class RentComandServviceImpl implements RentComandService {
@@ -15,7 +19,7 @@ public class RentComandServviceImpl implements RentComandService {
 
     public RentComandServviceImpl() {
         rents = new ArrayList<>();
-        file = new File("C:\\mycode\\oop\\incapsulare\\parc-auto\\src\\Rents");
+        file = new File("C:\\mycode\\oop\\incapsulare\\parc-auto\\src\\app\\Rents\\File\\Rents");
         this.loadRents();
     }
 
@@ -34,19 +38,19 @@ public class RentComandServviceImpl implements RentComandService {
 
     public void afisareInchirieri(){
         for(int i=0;i<rents.size();i++){
-            System.out.println(rents.get(i).descriere());
+            System.out.println(rents.get(i).toString());
         }
     }
 
     public String toSaveRents(){
         String text="";
         int i;
-        for( i=0;i<rents.size();i++){
+        for( i=0;i<rents.size()-1;i++){
             Rent rent=rents.get(i);
-            text+=rent.descriere()+"\n";
+            text+=rent.toString()+"\n";
 
         }
-        return text+rents.get(i).descriere();
+        return text+rents.get(i).toString();
     }
 
     public void saveRents(){
@@ -63,87 +67,35 @@ public class RentComandServviceImpl implements RentComandService {
     }
 
 
-    //getAllRentsByUserId
 
-    public List<Integer> getAllRentsByUserId(int userId){
-        List<Integer> carsIds=new ArrayList<>();
-        for(int i=0;i<rents.size();i++){
-             if(userId==rents.get(i).getIdUser()){
-                 carsIds.add(rents.get(i).getIdMasina());
-             }
-        }
-        return carsIds;
-
-    }
-    public List<Integer> masiniLibere() {
-        List<Integer> carIds=new ArrayList<>();
-        for (int i = 0; i < rents.size(); i++) {
-            if (verificareStatusMasina(rents.get(i).getIdMasina())){
-                carIds.add(rents.get(i).getId());
+    public int randomId(){
+        int id= new Random().nextInt(10000);
+        for(Rent rent:rents){
+            if (rent.getId()==id){
+                rent.setId(new Random().nextInt(10000));
             }
         }
-        return carIds;
+        return id;
+
     }
 
-    //todo:CheckCarStatusbyCarId
 
-
-    public Boolean verificareStatusMasina(int idMasina){
-        for(int i=0;i<rents.size();i++){
-            if(rents.get(i).getIdMasina()==idMasina){
-                if(rents.get(i).getStatus()== Status.PROCESSING){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    public int ceaMaiInchiriataMasina() {
-        int maxCount = 0;
-        int ceaMaiInchiriata = -1;
-
-        for (Rent rent1 : rents) {
-            int count = 0;
-            for (Rent rent2 : rents) {
-                if (rent1.getIdMasina() == rent2.getIdMasina()) {
-                    count++;
-                }
-            }
-            if (count > maxCount) {
-                maxCount = count;
-                ceaMaiInchiriata = rent1.getIdMasina();
-            }
-        }
-
-        return ceaMaiInchiriata;
-    }
-
-    public void inchiriereMasini(int idMasina, int userId) {
-        Rent r6=new Rent();
-
-        r6.setId(1);
-        r6.setIdMasina(idMasina);
-        r6.setIdUser(userId);
-        r6.setStatus(Status.COMPLETED);
-
-        this.rents.add(r6);
-    }
-
-    public boolean returnareMasini(int idUser,int idMasina) {
-        for(int i=0;i<rents.size();i++){
-            if(rents.get(i).getIdMasina()==idMasina&&rents.get(i).getIdUser()==idUser){
-                rents.get(i).setStatus(Status.COMPLETED);
-                return true;
-            }
-        }
-        return false;
-    }
 
     @Override
     public Rent add(Rent rent) {
+        rent.setId(randomId());
         rents.add(rent);
         saveRents();
         return rent;
     }
+
+    @Override
+    public Rent retur(Rent rent) {
+        rent.setReturnare(LocalDate.now());
+        rent.setStatus(Status.COMPLETED);
+        saveRents();
+        return rent;
+    }
+
+
 }

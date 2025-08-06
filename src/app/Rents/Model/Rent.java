@@ -2,24 +2,35 @@ package app.Rents.Model;
 
 import app.Rents.Status;
 
+import java.time.LocalDate;
+
+import java.time.format.DateTimeFormatter;
+
 public class Rent implements Comparable<Rent> {
     private int id;
     private int idUser;
     private int idMasina;
     private Status status;
+    private LocalDate inchiriere;
+    private LocalDate returnare;
 
-    public Rent(){
-        this.id = 0;
-        this.idUser = 0;
-        this.idMasina = 0;
-        this.status=Status.COMPLETED;
+
+    public Rent(int idUser,int idMasina){
+        this.id =0;
+        this.idUser = idUser;
+        this.idMasina = idMasina;
+        this.status=Status.PROCESSING;
+        this.inchiriere= LocalDate.now();
+        this.returnare= null;
     }
 
-    public Rent(int id, int idUser, int idMasina, Status status) {
+    public Rent(int id, int idUser, int idMasina, Status status, LocalDate inchiriere, LocalDate returnare) {
         this.id = id;
         this.idUser = idUser;
         this.idMasina = idMasina;
         this.status = status;
+        this.inchiriere=inchiriere;
+        this.returnare=returnare;
     }
 
     public Rent(String text){
@@ -28,15 +39,10 @@ public class Rent implements Comparable<Rent> {
         this.idUser = Integer.parseInt(text.split(",")[1]);
         this.idMasina = Integer.parseInt(text.split(",")[2]);
         this.status = Status.valueOf(text.split(",")[3]);
+        this.inchiriere= LocalDate.parse((text.split(",")[4]),DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        this.returnare= this.status==Status.COMPLETED?LocalDate.parse(text.split(",")[5],DateTimeFormatter.ofPattern("yyyy-MM-dd")):null;
     }
-    public String descriere() {
-        String text = "";
-        text +="Id : " + this.id + "\n";
-        text +="Id User : " + this.idUser + "\n";
-        text +="Id Masina : " + this.idMasina + "\n";
-        text +="Status : " + this.status + "\n";
-        return text;
-    }
+
 
     public int getId() {
         return id;
@@ -70,6 +76,22 @@ public class Rent implements Comparable<Rent> {
         this.status = status;
     }
 
+    public LocalDate getInchiriere() {
+        return inchiriere;
+    }
+
+    public void setInchiriere(LocalDate inchiriere) {
+        this.inchiriere = inchiriere;
+    }
+
+    public LocalDate getReturnare() {
+        return returnare;
+    }
+
+    public void setReturnare(LocalDate returnare) {
+        this.returnare = returnare;
+    }
+
     @Override
     public boolean equals(Object o){
         Rent rent=(Rent) o;
@@ -78,17 +100,15 @@ public class Rent implements Comparable<Rent> {
 
     @Override
     public String toString(){
-        return id+","+idUser+","+idMasina+","+status;
+
+        String retur=returnare!=null?returnare.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")):"";
+        String inchi=inchiriere.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return id+","+idUser+","+idMasina+","+status+","+inchi+","+retur;
     }
 
     @Override
     public int compareTo(Rent o) {
-        if (o.idUser>this.idUser){
-            return -1;
-        }
-        if(o.idUser<this.idUser){
-            return 1;
-        }
-        return 0;
+       return  this.inchiriere.compareTo(o.inchiriere);
+
     }
 }

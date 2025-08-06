@@ -22,6 +22,9 @@ public class Masina implements Comparable<Masina>{
        this.rulata=false;
        this.kilometrii=0;
    }
+   public Masina(int id) {
+      this.id = id;
+   }
 
    public Masina(int id, String marca, String model, String culoare, int pretInitial, int pretInchiriere, int anFabricare, boolean rulata, int kilometrii) {
       this.id = id;
@@ -137,7 +140,7 @@ public class Masina implements Comparable<Masina>{
    @Override
    public boolean equals(Object o){
       Masina masina=(Masina) o;
-      return masina.pretInitial==((Masina) o).pretInitial && masina.id==((Masina) o).id&& masina.anFabricare==((Masina) o).anFabricare;
+      return  this.getId()==masina.id;
    }
 
    @Override

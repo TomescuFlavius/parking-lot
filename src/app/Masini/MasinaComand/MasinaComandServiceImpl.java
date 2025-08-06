@@ -16,7 +16,7 @@ public class MasinaComandServiceImpl implements MasinaComandService{
 
     public MasinaComandServiceImpl() {
          masini=new ArrayList<>();
-         this.file=new File("C:\\mycode\\oop\\incapsulare\\parc-auto\\src\\app\\Masini\\Masini");
+         this.file=new File("C:\\mycode\\oop\\incapsulare\\parc-auto\\src\\app\\Masini\\File\\Masini");
          this.loadMasini();
 
     }
@@ -42,7 +42,7 @@ public class MasinaComandServiceImpl implements MasinaComandService{
     //todo: functie ce primeste ca paremtru o lista de ids si returneaza o lista cu ctoate masinile ce
     //au id in lista
 
-    public List<Masina> getMasini (List<Integer> idsCars) {
+    public List <Masina>  getMasini (List<Integer> idsCars) {
 
 
         List<Masina> masiniFiltrate = new ArrayList<>();
@@ -56,7 +56,7 @@ public class MasinaComandServiceImpl implements MasinaComandService{
 
     public void afisareMasini(){
         for(int i=0;i<masini.size();i++){
-            System.out.println(this.masini.get(i).descriere());
+            System.out.println(this.masini.get(i).toString());
         }
     }
 
@@ -64,9 +64,9 @@ public class MasinaComandServiceImpl implements MasinaComandService{
         String result="";
         int i=0;
         for(Masina masina:masini){
-            result+=masini.get(i).descriere()+"\n";
+            result+=masini.get(i).toString()+"\n";
         }
-        return result+masini.get(i).descriere();
+        return result+masini.get(i).toString();
     }
 
     public void saveMasini() {
@@ -84,29 +84,20 @@ public class MasinaComandServiceImpl implements MasinaComandService{
 
 
 
-    public boolean steregereMasina(int id){
-        for (int i=0;i<masini.size();i++) {
-            if(id==masini.get(i).getId()) {
-                masini.remove(i);
-                return true;
-            }
-        }
-        return false;
-    }
-    public void getMasiniById(int id){
-        for(int i=0;i<masini.size();i++){
-            if(id==masini.get(i).getId()) {
-                System.out.println(masini.get(i).descriere());
-            }
-        }
-    }
-
-
     @Override
     public Masina add(Masina masina) {
         masini.add(masina);
         saveMasini();
         return masina;
     }
+
+    @Override
+    public Masina stergereMasina(Masina masina) {
+        masini.remove(masina);
+        saveMasini();
+        return masina;
+    }
+
+
 }
 

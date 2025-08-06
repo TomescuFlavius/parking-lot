@@ -2,6 +2,7 @@ package app.Masini.MasinaQuery;
 
 
 import app.Masini.Model.Masina;
+import app.Rents.Model.Rent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -50,4 +51,29 @@ public class MasinaQueryServiceImpl implements MasinaQueryService {
     public List<Masina> getAllMasini() {
         return this.masini;
     }
+
+    @Override
+    public Masina getMasiniByid(int id) {
+        for(int i=0;i<masini.size();i++){
+            if(id==masini.get(i).getId()) {
+               return masini.get(i);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<Masina> getAllMasiniByIds(List<Integer> carIds) {
+        List<Masina> masiniCautate= new ArrayList<>();
+        for (int i=0;i<carIds.size();i++){
+            Masina masina= new Masina(carIds.get(i));
+            int index=masini.indexOf(masina);
+            if(index>=0){
+                masiniCautate.add(masini.get(index));
+            }
+        }
+        return masiniCautate;
+    }
+
+
 }
