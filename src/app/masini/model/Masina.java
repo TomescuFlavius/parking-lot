@@ -1,4 +1,4 @@
-package app.Masini.Model;
+package app.masini.model;
 
 public class Masina implements Comparable<Masina>{
    private int id;
@@ -26,8 +26,35 @@ public class Masina implements Comparable<Masina>{
       this.id = id;
    }
 
+
+
    public Masina(int id, String marca, String model, String culoare, int pretInitial, int pretInchiriere, int anFabricare, boolean rulata, int kilometrii) {
       this.id = id;
+      this.marca = marca;
+      this.model = model;
+      this.culoare = culoare;
+      this.pretInitial = pretInitial;
+      this.pretInchiriere = pretInchiriere;
+      this.anFabricare = anFabricare;
+      this.rulata = rulata;
+      this.kilometrii = kilometrii;
+   }
+
+
+   private Masina(Builder builder){
+      this.id = builder.id;
+      this.marca = builder.marca;
+      this.model = builder.model;
+      this.culoare = builder.culoare;
+      this.pretInitial = builder.pretInitial;
+      this.pretInchiriere = builder.pretInchiriere;
+      this.anFabricare = builder.anFabricare;
+      this.rulata = builder.rulata;
+      this.kilometrii = builder.kilometrii;
+   }
+
+
+   public Masina(String marca, String model, String culoare, int pretInitial, int pretInchiriere, int anFabricare, boolean rulata, int kilometrii) {
       this.marca = marca;
       this.model = model;
       this.culoare = culoare;
@@ -52,19 +79,6 @@ public class Masina implements Comparable<Masina>{
    }
 
 
-   public String descriere() {
-      String text = "";
-      text +="Id : " + this.id + "\n";
-      text +="Marca : " + this.marca + "\n";
-      text +="Model : " + this.model + "\n";
-      text +="Culoare : " + this.culoare + "\n";
-      text +="Pret initial : " + this.pretInitial + "\n";
-      text +="Pret inchiriere : " + this.pretInchiriere + "\n";
-      text +="An fabricare : " + this.anFabricare + "\n";
-      text +="Rulata/Nu : " + this.rulata + "\n";
-      text +="Nr. de kilometrii : " + this.kilometrii + "\n";
-   return text;
-   }
 
    public int getId() {
       return id;
@@ -137,6 +151,74 @@ public class Masina implements Comparable<Masina>{
    public void setKilometrii(int kilometrii) {
       this.kilometrii = kilometrii;
    }
+
+   public static Builder builder(){
+      return  new Builder();
+   }
+
+   public static class Builder{
+      private int id;
+      private String marca;
+      private String model;
+      private String culoare;
+      private int pretInitial;
+      private int pretInchiriere;
+      private int anFabricare;
+      private boolean rulata;
+      private int kilometrii;
+
+      public Builder id(int id){
+         this.id=id;
+         return this;
+      }
+
+      public Builder marca(String marca){
+         this.marca=marca;
+         return this;
+      }
+
+      public Builder model(String model){
+         this.model=model;
+         return this;
+      }
+
+      public Builder culoare(String culoare){
+         this.culoare=culoare;
+         return this;
+      }
+
+      public Builder pretInitial(int pretInitial){
+         this.pretInitial=pretInitial;
+         return this;
+      }
+
+      public Builder pretInchiriere(int pretInchiriere){
+         this.pretInchiriere=pretInchiriere;
+         return this;
+      }
+
+      public Builder anFabricare(int anFabricare){
+         this.anFabricare=anFabricare;
+         return this;
+      }
+
+      public Builder rulata(boolean rulata){
+         this.rulata=rulata;
+         return this;
+      }
+
+      public Builder kilometrii(int kilometrii){
+         this.kilometrii=kilometrii;
+         return this;
+      }
+
+      public Masina build(){
+         return new Masina(this);
+      }
+
+   }
+
+
    @Override
    public boolean equals(Object o){
       Masina masina=(Masina) o;

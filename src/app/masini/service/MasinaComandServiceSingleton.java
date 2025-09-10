@@ -1,4 +1,6 @@
-package app.Masini.MasinaComand;
+package app.masini.service;
+
+import app.masini.service.intefaces.MasinaComandService;
 
 public class MasinaComandServiceSingleton{
     private static class LazyHolder{

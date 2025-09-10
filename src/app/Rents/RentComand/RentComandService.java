@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface RentComandService {
     Rent add(Rent rent);
-    Rent retur(Rent rent);
+    Rent retur(int  rentId);
 
 }

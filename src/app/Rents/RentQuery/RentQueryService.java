@@ -1,6 +1,5 @@
 package app.Rents.RentQuery;
 
-import app.Masini.Model.Masina;
 import app.Rents.Model.Rent;
 
 import java.util.List;

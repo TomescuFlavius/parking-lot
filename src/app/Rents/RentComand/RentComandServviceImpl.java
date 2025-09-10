@@ -1,11 +1,10 @@
 package app.Rents.RentComand;
-import app.Masini.Model.Masina;
 import app.Rents.Model.Rent;
-import app.Rents.RentQuery.RentQueryService;
 import app.Rents.Status;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -52,18 +51,15 @@ public class RentComandServviceImpl implements RentComandService {
         }
         return text+rents.get(i).toString();
     }
-
+//try-with-resources
     public void saveRents(){
-        try {
-            FileWriter writer = new FileWriter(file);
-            PrintWriter printWriter = new PrintWriter(writer);
-            printWriter.print(toSaveRents());
-            printWriter.close();
-
-        }catch (Exception e)
+        try(PrintWriter writer= new PrintWriter(new FileWriter(file))) {
+            writer.print(this);
+        }catch (IOException e)
         {
             e.printStackTrace();
         }
+
     }
 
 
@@ -90,11 +86,20 @@ public class RentComandServviceImpl implements RentComandService {
     }
 
     @Override
-    public Rent retur(Rent rent) {
-        rent.setReturnare(LocalDate.now());
-        rent.setStatus(Status.COMPLETED);
-        saveRents();
-        return rent;
+    public Rent retur(int rentId) {
+
+        Rent rent;
+        for(Rent r :rents){
+            if(r.getId()==rentId){
+                rent=r;
+                rent.setReturnare(LocalDate.now());
+                rent.setStatus(Status.COMPLETED);
+                saveRents();
+                return rent;
+            }
+        }
+        return null;
+
     }
 
 

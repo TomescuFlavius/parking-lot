@@ -1,4 +1,6 @@
-package app.Masini.MasinaQuery;
+package app.masini.service;
+
+import app.masini.service.intefaces.MasinaQueryService;
 
 public class MasinaQueryServiceSingleton{
     private static class Lazy{

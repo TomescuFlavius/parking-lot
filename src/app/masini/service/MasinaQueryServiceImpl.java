@@ -1,13 +1,15 @@
-package app.Masini.MasinaQuery;
+package app.masini.service;
 
 
-import app.Masini.Model.Masina;
-import app.Rents.Model.Rent;
+
+
+import app.masini.exceptions.CarNotFoundException;
+import app.masini.model.Masina;
+import app.masini.service.intefaces.MasinaQueryService;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class MasinaQueryServiceImpl implements MasinaQueryService {
@@ -16,7 +18,7 @@ public class MasinaQueryServiceImpl implements MasinaQueryService {
     private List<Masina> masini;
 
     public MasinaQueryServiceImpl(){
-        this.file=new File("C:\\mycode\\oop\\incapsulare\\parc-auto\\src\\app\\Masini\\File\\Masini");
+        this.file=new File("C:\\mycode\\oop\\incapsulare\\parc-auto\\src\\app\\masini\\data\\Masini");
         this.masini=new ArrayList<>();
         this.loadMasini();
     }
@@ -52,15 +54,19 @@ public class MasinaQueryServiceImpl implements MasinaQueryService {
         return this.masini;
     }
 
+
     @Override
-    public Masina getMasiniByid(int id) {
-        for(int i=0;i<masini.size();i++){
-            if(id==masini.get(i).getId()) {
-               return masini.get(i);
+    public Masina getMasiniByid(int id) throws CarNotFoundException {
+            for(int i=0;i<masini.size();i++){
+                if(id==masini.get(i).getId()) {
+                    return masini.get(i);
+                }
             }
-        }
-        return null;
+        throw  new CarNotFoundException();
     }
+
+
+
 
     @Override
     public List<Masina> getAllMasiniByIds(List<Integer> carIds) {

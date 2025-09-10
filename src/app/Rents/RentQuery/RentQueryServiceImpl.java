@@ -1,16 +1,11 @@
 package app.Rents.RentQuery;
 
-import app.Masini.Model.Masina;
 import app.Rents.Model.Rent;
-import app.Rents.Status;
-import app.Users.Model.User;
 
 
 import java.io.File;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class RentQueryServiceImpl implements RentQueryService {
